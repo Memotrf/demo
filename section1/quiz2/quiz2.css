@@ -1,0 +1,45 @@
+html,
+body {
+  font-family: monospace;
+  height: 100%;
+  margin: 0;
+}
+section {
+  height: 200px;
+  padding: 10px;
+}
+.black-dot {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  background-color: green !important;
+}
+
+/* NOT ALLOW THIS WAY */
+/*
+.black-dot {
+  background-color: black !important;
+}
+*/
+
+.content {
+  border: 5px solid red;
+  box-sizing: border-box;
+  background-color: #ffe8f0;
+}
+
+/* answer */
+.content {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.black {
+  background-color: black !important;
+}
+
+.container {
+  height: calc(100vh - 200px);
+}

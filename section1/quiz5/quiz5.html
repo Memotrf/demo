@@ -1,0 +1,49 @@
+<script>
+  const newDialog = document.createElement("div");
+  newDialog.id = "newDialog";
+  newDialog.style.border = "solid 1px black";
+  newDialog.style.position = "absolute";
+  newDialog.style.width = "100%";
+  newDialog.style.height = "100%";
+  newDialog.style.top = "0px";
+  newDialog.style.background = "white";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.innerText = "Close";
+
+  const dialogText = document.createElement("div");
+  dialogText.innerText = "This is a dialog";
+
+  newDialog.appendChild(closeBtn);
+  newDialog.appendChild(dialogText);
+
+  function showDialog() {
+    document.addEventListener("click", function (e) {
+      if (e.target === closeBtn) {
+        newDialog.removeChild(closeBtn);
+        newDialog.removeChild(dialogText);
+        newDialog.parentElement.removeChild(newDialog);
+      }
+    });
+
+    //do not remove this part, it is for the ease of leak identification
+    const tmp = [];
+    for (let i = 1; i < 5000000; i++) {
+      tmp.push(i);
+    }
+    closeBtn.tmp = tmp;
+    //end
+    newDialog.appendChild(closeBtn);
+    newDialog.appendChild(dialogText);
+    document.body.appendChild(newDialog);
+  }
+</script>
+<div id="mainContainer">
+  <button onclick="showDialog()">Show dialog</button>
+</div>
+
+<!-- Answer -->
+<!-- I thought the memory leak because newDialog, closeBtn and dialogText are create in showDialog function.
+  And it creates every time user click Show dialog button, so I move its outside the showDialog function.
+  The GC can't clear array because the array tmp was referenced by the closeBtn and the closeBtn is inside the showDialog function.
+  And showDialog function was referenced by the "Show dialog" button that never been remove, so the GC can't remove the tmp array. -->
